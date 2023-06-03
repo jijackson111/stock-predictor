@@ -1,4 +1,10 @@
-Stock(ticker, from_date=year_d1, to_date=today, fmt='csv'):
+DataFrame(data)
+  DataFrame.csv()
+  DataFrame.dict_list()
+  DataFrame.create_df(fmt)
+  DataFrame.show_gui(dataframe)
+
+Stock(ticker, from_date=year_d1, to_date=today, fmt='csv')
   Stock.eod(period='w', order='d')
   Stock.realtime()
   Stock.dividends()
@@ -8,7 +14,8 @@ Stock(ticker, from_date=year_d1, to_date=today, fmt='csv'):
   Stock.fundamentals(filt=None)
   Stock.sentiments(form='financial')
   termin
- Market(from_date=year_d1, to_date=today, fmt='csv'))
+ 
+ Market(from_date=year_d1, to_date=today, fmt='csv')
   Market.calendar(category, ticker=None)
   Market.econ_events(country=None)
   Market.insider(ticker=None, limit=100)

@@ -3,7 +3,7 @@ from datetime import date
 import requests
 import pandas as pd
 from io import StringIO
-import ast
+from pandasgui import show
 
 # Global variables
 PATH = 'https://eodhistoricaldata.com/api/'
@@ -32,6 +32,9 @@ class DataFrame:
     def create_df(self, fmt):
         p = self.__getattribute__(fmt)
         return p()
+    
+    def show_gui(dataframe):
+        show(dataframe)
     
 # Stock class
 class Stock:
@@ -111,6 +114,14 @@ class Market:
         self.fdate = from_date
         self.tdate = to_date
         self.fmt = fmt
+        
+    def eod_bulk(self, country):
+        code = 'eod-bulk-last-day'
+        url = '{}{}/{}?api_token={}&fmt={}'.format(PATH, code, country, TOKEN, self.fmt)
+        data = requests.get(url).text
+        d = DataFrame(data)
+        df = d.create_df('csv')
+        return df
         
     def calendar(self, category, ticker=None):
         code = 'calendar'

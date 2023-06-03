@@ -1,0 +1,20 @@
+Stock(ticker, from_date=year_d1, to_date=today, fmt='csv'):
+  Stock.eod(period='w', order='d')
+  Stock.realtime()
+  Stock.dividends()
+  Stock.splits()
+  Stock.technical(func, period='w', order='d')
+  Stock.intraday(interval=5)
+  Stock.fundamentals(filt=None)
+  Stock.sentiments(form='financial')
+  termin
+ Market(from_date=year_d1, to_date=today, fmt='csv'))
+  Market.calendar(category, ticker=None)
+  Market.econ_events(country=None)
+  Market.insider(ticker=None, limit=100)
+  Market.news(limit=50, s=None, t=None)
+  Market.macro_indicators(country, indicator=None)
+  
+ List()
+  List.exchanges()
+  List.tickers(exchange)

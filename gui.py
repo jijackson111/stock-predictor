@@ -3,9 +3,8 @@ from pandasgui import show
 import importlib.util
 import sys
 
-from retrieve_data import Stock
+from retrieve_data import Market
 
-s = Stock('AAPL.US')
-eod = s.eod()
-
-print(eod)
+m = Market()
+ip = m.calendar('ipos')
+print(ip)

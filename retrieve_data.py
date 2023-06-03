@@ -3,6 +3,7 @@ from datetime import date
 import requests
 import pandas as pd
 from io import StringIO
+import ast
 
 # Global variables
 PATH = 'https://eodhistoricaldata.com/api/'
@@ -18,7 +19,15 @@ class DataFrame:
     def csv(self):
         csvString = StringIO(self.data)
         df = pd.read_csv(csvString, sep=",", header=None)
-        return df    
+        df.columns = df.iloc[0]
+        df = df[1:]
+        df = df.set_index(df.columns[0])
+        return df
+    
+    def dict_list(self):
+        df = pd.DataFrame.from_dict(self.data) 
+        df = df.set_index(df.columns[0])
+        return df 
     
     def create_df(self, fmt):
         p = self.__getattribute__(fmt)
@@ -112,34 +121,59 @@ class Market:
         if ticker != None:
             url += '&symbols={}'.format(ticker)
         url = url + '&from={}&to={}'.format(self.fdate, self.tdate)
+        null = 'null'
+        data = eval(requests.get(url).text)
+        data_cropped = data.get(category)
+        d = DataFrame(data_cropped)
+        df = d.create_df('dict_list')
+        return df
     
     def econ_events(self, country=None):
         code = 'economic-events'
         url = '{}{}?api_token={}&from={}&to={}'.format(PATH, code, TOKEN, self.fdate, self.tdate)
         if country != None:
             url += '&country={}'.format(country)
+        null = 'null'
+        data = eval(requests.get(url).text)
+        d = DataFrame(data)
+        df = d.create_df('dict_list')
+        return df
             
     def insider(self, ticker=None, limit=100):
         code = 'insider-transactions'
-        url = '{}{}?api_token={}&limit={}&from={}&to={}'.format(PATH, code, TOKEN, limit, self.date, self.tdate)
+        url = '{}{}?api_token={}&limit={}&from={}&to={}'.format(PATH, code, TOKEN, limit, self.fdate, self.tdate)
         if ticker != None:
             url += '&code={}'.format(ticker)
+        null = 'null'
+        data = eval(requests.get(url).text)
+        d = DataFrame(data)
+        df = d.create_df('dict_list')
+        return df
             
     def news(self, limit=50, s=None, t=None):
         if s == None and t == None:
             return 'Add either s or t'
         code = 'news'
-        url = '{}{}?api_token={}&limit={}&from={}&to={}'.format(PATH, code, TOKEN, limit, self.date, self.tdate)
+        url = '{}{}?api_token={}&limit={}&from={}&to={}'.format(PATH, code, TOKEN, limit, self.fdate, self.tdate)
         if s != None:
             url += '&s={}'.format(s)
         elif t != None:
             url += '&t=()'.format(t)
+        null = 'null'
+        data = eval(requests.get(url).text)
+        d = DataFrame(data)
+        df = d.create_df('dict_list')
+        return df
             
     def macro_indicators(self, country, indicator=None):
         code = 'macro-indicator'
-        url = '{}{}/{}?api_token={}&fmt={}'.format(PATH, code, country, self.fmt)
+        url = '{}{}/{}?api_token={}&fmt={}'.format(PATH, code, country, TOKEN, self.fmt)
         if indicator != None:
             url += '&indicator={}'.format(indicator)
+        data = requests.get(url).text
+        d = DataFrame(data)
+        df = d.create_df('csv')
+        return df
 
     
 # List class

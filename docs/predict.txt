@@ -1,0 +1,4 @@
+Predict()
+    Predict.layers(info) # Must be list of str lists with [type, nodes, activation]
+    Predict.eodclose(data, lay, ep, vs, lr) #Single end of day close
+    Predict.predict(pred_data, model)

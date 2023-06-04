@@ -50,7 +50,7 @@ class Stock:
         df = d.create_df(self.fmt)
         return df
         
-    def eod(self, period='w', order='d'):
+    def eod(self, period='d', order='d'):
         code = 'eod'
         url = '{}{}/{}?from={}&to={}&period={}&order={}&api_token={}'.format(PATH, code, self.ticker, self.fdate, self.tdate, period, order, TOKEN)
         df = self.get_data(url)
